@@ -42,6 +42,7 @@ jobs:
         suite:
           - angular-language-tools
           - language-tools-starter
+          - plugins
           - volar-starter
           - vtu
       fail-fast: false

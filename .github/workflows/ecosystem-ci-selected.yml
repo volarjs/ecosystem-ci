@@ -36,6 +36,7 @@ on:
         options:
           - angular-language-tools
           - language-tools-starter
+          - plugins
           - volar-starter
           - vtu
 jobs:

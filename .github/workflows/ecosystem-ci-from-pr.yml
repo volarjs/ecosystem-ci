@@ -31,6 +31,7 @@ on:
           - "-"
           - angular-language-tools
           - language-tools-starter
+          - plugins
           - volar-starter
           - vtu
 jobs:
@@ -95,6 +96,7 @@ jobs:
         suite:
           - angular-language-tools
           - language-tools-starter
+          - plugins
           - volar-starter
           - vtu
       fail-fast: false

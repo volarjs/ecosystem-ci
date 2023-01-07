@@ -38,3 +38,41 @@ graph TD
     D -->|No| Fix
     --> Prepare
 ```
+
+## Support modules
+
+Vue:
+
+- @volar/preview
+- @volar/vue-language-core
+- @volar/vue-language-plugin-pug
+- @volar/vue-language-server
+- @volar/vue-language-service
+- @volar/vue-typescript
+- typescript-vue-plugin
+- vue-component-meta
+- vue-tsc-eslint-hook
+- vue-tsc
+
+Core:
+
+- @volar/language-core
+- @volar/language-server
+- @volar/language-service
+- @volar/shared
+- @volar/source-map
+- @volar/transforms
+- @volar/typescript-faster
+- @volar/typescript
+- @volar/vscode-language-client
+
+Core plugins:
+
+- @volar-plugins/css
+- @volar-plugins/emmet
+- @volar-plugins/html
+- @volar-plugins/json
+- @volar-plugins/pug-beautify
+- @volar-plugins/pug
+- @volar-plugins/typescript-twoslash-queries
+- @volar-plugins/typescript

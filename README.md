@@ -61,7 +61,6 @@ Core:
 - @volar/language-service
 - @volar/shared
 - @volar/source-map
-- @volar/transforms
 - @volar/typescript-faster
 - @volar/typescript
 - @volar/vscode-language-client

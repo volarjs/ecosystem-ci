@@ -245,7 +245,7 @@ export async function getPermanentRef() {
 export async function buildVolar({ verify = false }) {
 	cd(volarPath)
 	await $`pnpm install --frozen-lockfile --no-optional`
-	await $`pnpm run build-ci`
+	await $`pnpm run build`
 	if (verify) {
 		await $`pnpm run test`
 	}

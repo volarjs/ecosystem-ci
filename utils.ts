@@ -205,9 +205,12 @@ export async function runInRepo(options: RunOptions & RepoOptions) {
 	const localOverrides = await buildOverrides(pkg, options, overrides)
 	overrides = {
 		...overrides,
-		...localOverrides,
+		...localOverrides.deps,
 	}
-	await applyPackageOverrides(dir, pkg, overrides)
+	await applyPackageOverrides(dir, pkg, overrides, {
+		...overrides,
+		...localOverrides.full,
+	})
 	await beforeBuildCommand?.(pkg.scripts)
 	await buildCommand?.(pkg.scripts)
 	if (test) {
@@ -306,6 +309,7 @@ export async function applyPackageOverrides(
 	dir: string,
 	pkg: any,
 	overrides: Overrides = {},
+	fullOverrides: Overrides = {},
 ) {
 	const useFileProtocol = (v: string) =>
 		isLocalOverride(v) ? `file:${path.resolve(v)}` : v
@@ -351,17 +355,17 @@ export async function applyPackageOverrides(
 		}
 		pkg.pnpm.overrides = {
 			...pkg.pnpm.overrides,
-			...overrides,
+			...fullOverrides,
 		}
 	} else if (pm === 'yarn') {
 		pkg.resolutions = {
 			...pkg.resolutions,
-			...overrides,
+			...fullOverrides,
 		}
 	} else if (pm === 'npm') {
 		pkg.overrides = {
 			...pkg.overrides,
-			...overrides,
+			...fullOverrides,
 		}
 		// npm does not allow overriding direct dependencies, force it by updating the blocks themselves
 		for (const [name, version] of Object.entries(overrides)) {
@@ -420,7 +424,8 @@ async function buildOverrides(
 
 	const needsOverride = (p: string) =>
 		repoOverrides[p] === true || (deps.has(p) && repoOverrides[p] == null)
-	const overrides: Overrides = {}
+	const depsOverrides: Overrides = {}
+	const fullOverrides: Overrides = {}
 	const packages = [
 		...fs
 			.readdirSync(path.join(root, 'packages'))
@@ -435,10 +440,11 @@ async function buildOverrides(
 	for (const pkgPath of packages) {
 		const pkgJson = requireJson(path.join(root, pkgPath, 'package.json'))
 		if (needsOverride(pkgJson.name)) {
-			overrides[pkgJson.name] = 'file:' + path.join(root, pkgPath)
+			depsOverrides[pkgJson.name] = 'file:' + path.join(root, pkgPath)
 		}
+		fullOverrides[pkgJson.name] = 'file:' + path.join(root, pkgPath)
 	}
-	return overrides
+	return { deps: depsOverrides, full: fullOverrides }
 }
 
 function requireJson(jsonPath: string) {
